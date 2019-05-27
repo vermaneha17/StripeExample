@@ -13,6 +13,15 @@ module.exports = {
         }
     },
 
+    getCustomer: async function (req, res, next) {
+        try {
+            const customer = await stripe.customers.retrieve(req.params.id);
+            res.responseHandler({ customer: customer });
+        } catch (err) {
+            next(err);
+        }
+    },
+
     createCharge: async function (req, res, next) {
         try {
             const charge = await stripe.charges.create({
@@ -45,6 +54,15 @@ module.exports = {
                 object: req.query.object
             });
             res.responseHandler({ cards: cards });
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    deleteCard: async function (req, res, next) {
+        try {
+            const confirmation = await stripe.customers.deleteSource(req.params.id, req.query.card);
+            res.responseHandler(confirmation);
         } catch (err) {
             next(err);
         }
