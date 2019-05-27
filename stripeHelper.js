@@ -1,40 +1,52 @@
 const stripe = require('stripe')('sk_test_KTFcgbUk9qOktilvBbSlaKz4');
 
 module.exports = {
-    createCustomer: async function () {
+    createCustomer: async function (req, res, next) {
         try {
             const customer = await stripe.customers.create({
-                email: 'exampleCustome@gmail.com',
-                source: 'tok_amex'
+                email: req.query.email,
+                source: req.query.token
             });
-            console.log('customer', customer);
+            res.responseHandler({ message: 'Customer created', customer });
         } catch (err) {
-            return err;
+            next(err);
         }
     },
 
-    createCharge: async function () {
+    createCharge: async function (req, res, next) {
         try {
             const charge = await stripe.charges.create({
                 amount: 200,
                 currency: 'usd',
-                source: 'tok_1EedgFGBpUAwKFdDKMkwfB2M',
+                source: req.query.token,
                 description: 'Charge for exampleCustome@gmail.com'
             });
-            console.log('charge', charge);
+            res.responseHandler({ message: 'Charge created', charge });
         } catch (err) {
-            return err;
+            next(err);
         }
     },
 
-    addCard: async function () {
+    addCard: async function (req, res, next) {
         try {
-            const card = await stripe.customers.createSource('cus_F8uoZn63wrZE3j',{
-                source: 'tok_1Eeei9GBpUAwKFdDpxkIxw2y'
+            const card = await stripe.customers.createSource(req.params.id, {
+                source: req.query.token
             });
-            console.log('card',card);            
+            res.responseHandler({ message: 'Card added', card });
         } catch (err) {
-            return err;
+            next(err);
+        }
+    },
+
+    getSources: async function (req, res, next) {
+        try {
+            const cards = await stripe.customers.listSources(req.params.id, {
+                limit: 3,
+                object: req.query.object
+            });
+            res.responseHandler({ cards: cards });
+        } catch (err) {
+            next(err);
         }
     }
 };
