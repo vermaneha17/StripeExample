@@ -65,9 +65,9 @@ module.exports = {
         }catch (err) {
             return err;
         }
-    }
+    },
 
-    /* createPayment: async function (body) {
+    createPayment: async function (body) {
         try {
             let charge;
             if (body.method === 'card') {
@@ -86,5 +86,5 @@ module.exports = {
         } catch (err) {
            return err;
         }
-    } */
+    }
 };
