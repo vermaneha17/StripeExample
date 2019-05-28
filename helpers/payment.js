@@ -1,27 +1,24 @@
 const stripeHelper = require('./stripe');
 
 module.exports = {
-    createPayment: async function (req, res, next) {
-        try {            
-            console.log('request body',req.body);
-            
+    createPayment: async function (body) {
+        try {
             let charge;
-            if (req.body.method === 'card') {
-                if (req.body.saveCard === true) {
-                    const card = await stripeHelper.addCard(req.body.id, req.body.token);
-                    charge = await stripeHelper.createCharge(card, req.body.amount);
+            if (body.method === 'card') {
+                if (body.saveCard === true) {
+                    const card = await stripeHelper.addCard(body.id, token);
+                    charge = await stripeHelper.createCharge(card, amount);
                 }
-                else if (req.body.saveCard === false) {
-                    charge = await stripeHelper.createCharge(req.body.token, req.body.amount);
+                else if (body.saveCard === false) {
+                    charge = await stripeHelper.createCharge(body.token, body.amount);                
                 }
             }
-            else if (req.body.method === 'savedCard') {
-                charge = await stripeHelper.createCharge(req.body.card, req.body.amount);
-                console.log('charge',charge);                
+            else if (body.method === 'savedCard') {
+                charge = await stripeHelper.createCharge(body.card, body.amount);               
             }
             return charge;
         } catch (err) {
            return err;
         }
-    } 
+    }
 }

@@ -6,7 +6,7 @@ const routes = require('./routes');
 
 const app = express();
 app.use(responseHandler);
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use(routes);
 
 app.listen(3000, () => {

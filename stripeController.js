@@ -1,5 +1,6 @@
-const stripeHelper = require('./helpers/stripe');
 const createError = require('http-errors');
+
+const stripeHelper = require('./helpers/stripe');
 
 module.exports = {
     createCustomer: async function (req, res, next) {

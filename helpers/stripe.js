@@ -65,9 +65,9 @@ module.exports = {
         }catch (err) {
             return err;
         }
-    },
+    }
 
-    createPayment: async function (body) {
+    /* createPayment: async function (body) {
         try {
             let charge;
             if (body.method === 'card') {
@@ -76,7 +76,7 @@ module.exports = {
                     charge = await createCharge(card, amount);
                 }
                 else if (body.saveCard === false) {
-                    charge = await createCharge(body.token, body.amount);
+                    charge = await createCharge(body.token, body.amount);             
                 }
             }
             else if (body.method === 'savedCard') {
@@ -86,5 +86,5 @@ module.exports = {
         } catch (err) {
            return err;
         }
-    }
+    } */
 };
