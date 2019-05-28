@@ -3,6 +3,8 @@ const stripeHelper = require('./stripe');
 module.exports = {
     createPayment: async function (body) {
         try {
+            console.log('body: ',body);
+            
             let charge;
             if (body.method === 'card') {
                 if (body.saveCard === true) {
@@ -10,7 +12,8 @@ module.exports = {
                     charge = await stripeHelper.createCharge(card, amount);
                 }
                 else if (body.saveCard === false) {
-                    charge = await stripeHelper.createCharge(body.token, body.amount);                
+                    charge = await stripeHelper.createCharge(body.token, body.amount); 
+                                   
                 }
             }
             else if (body.method === 'savedCard') {

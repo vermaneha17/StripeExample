@@ -65,7 +65,7 @@ module.exports = {
         }catch (err) {
             return err;
         }
-    },
+    }/* ,
 
     createPayment: async function (body) {
         try {
@@ -86,5 +86,5 @@ module.exports = {
         } catch (err) {
            return err;
         }
-    }
+    } */
 };

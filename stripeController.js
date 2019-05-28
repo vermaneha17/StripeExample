@@ -65,11 +65,28 @@ module.exports = {
 
     createPayment: async function (req, res, next) {
         try {
-            const charge = await stripeHelper.createPayment(req.body);
-            res.responseHandler(charge)
+            const body = req.body;
+            console.log('Body from controller: ',body);
+            
+            let charge;
+            if (body.method === 'card') {
+                if (body.saveCard === true) {
+                    const card = await stripeHelper.addCard(body.id, token);
+                    charge = await stripeHelper.createCharge(card, amount);
+                }
+                else if (body.saveCard === false) {
+                    charge = await stripeHelper.createCharge(body.token, body.amount); 
+                    console.log('charge: ',charge);
+                                
+                }
+            }
+            else if (body.method === 'savedCard') {
+                charge = await stripeHelper.createCharge(body.card, body.amount);               
+            }
+            res.responseHandler(charge);
         } catch (err) {
-            //return next(createError('Invalid Customer Id'));
-            console.log('Error: ', err);
+           //return next(createError('Invalid Customer Id'));
+           console.log('Error: ', err);
         }
     }
 }
